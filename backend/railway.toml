@@ -2,8 +2,8 @@
 builder = "NIXPACKS"
 buildCommand = "npm install && npm run build"
 
-[build.nixpacksPlan.phases.setup]
-nixPkgs = ["nodejs_20", "npm-10_x", "openssl"]
+[build.env]
+NIXPACKS_NODE_VERSION = "20"
 
 [deploy]
 startCommand = "node dist/main"
