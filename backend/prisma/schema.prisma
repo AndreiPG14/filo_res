@@ -1,0 +1,199 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  name            String
+  phone           String?   @db.VarChar(9)
+  email           String    @unique @db.VarChar(100)
+  profile         Profile   @default(ADMIN)
+  status          Status    @default(ACTIVE)
+  emailVerifiedAt DateTime?
+  password        String    @db.VarChar(100)
+  image           String?   @db.VarChar(500)
+  rememberToken   String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  sales           Sale[]
+
+  @@map("users")
+}
+
+model Company {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  address    String   @db.VarChar(500)
+  phone      String   @db.VarChar(9)
+  taxpayerId String   @db.VarChar(20)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("companies")
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(255)
+  image     String?   @db.VarChar(500)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          Int            @id @default(autoincrement())
+  name        String         @db.VarChar(255)
+  barcode     String?        @db.VarChar(30)
+  price       Decimal        @default(0) @db.Decimal(10, 2)
+  stock       Int
+  alerts      Int
+  image       String?        @db.VarChar(100)
+  categoryId  Int
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  category    Category       @relation(fields: [categoryId], references: [id])
+  saleDetails SaleDetail[]
+  presas      ProductPresa[]
+
+  @@map("products")
+}
+
+model ProductPresa {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  name      String
+  cantidad  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_presa")
+}
+
+model Denomination {
+  id        Int              @id @default(autoincrement())
+  type      DenominationType @default(BILLETE)
+  value     String           @db.VarChar(255)
+  image     String?          @db.VarChar(100)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@map("denominations")
+}
+
+model Mesa {
+  id        Int        @id @default(autoincrement())
+  nombre    String     @unique
+  estado    MesaEstado @default(libre)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  pedidos   Pedido[]
+
+  @@map("mesas")
+}
+
+model Pedido {
+  id          Int             @id @default(autoincrement())
+  mesaId      Int
+  estado      PedidoEstado    @default(PENDIENTE)
+  metodoPago  MetodoPago      @default(EFECTIVO)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  mesa        Mesa            @relation(fields: [mesaId], references: [id])
+  detalles    PedidoDetalle[]
+
+  @@map("pedidos")
+}
+
+model PedidoDetalle {
+  id         Int      @id @default(autoincrement())
+  pedidoId   Int
+  productId  Int?
+  nombre     String
+  precio     Decimal  @db.Decimal(10, 2)
+  cantidad   Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id])
+
+  @@map("pedido_detalles")
+}
+
+model Sale {
+  id        Int        @id @default(autoincrement())
+  total     Decimal    @db.Decimal(10, 2)
+  items     Int
+  cash      Decimal    @db.Decimal(10, 2)
+  change    Decimal    @db.Decimal(10, 2)
+  status    SaleStatus @default(PAID)
+  userId    Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User       @relation(fields: [userId], references: [id])
+  details   SaleDetail[]
+
+  @@map("sales")
+}
+
+model SaleDetail {
+  id        Int      @id @default(autoincrement())
+  price     Decimal  @db.Decimal(10, 2)
+  quantity  Decimal  @db.Decimal(10, 2)
+  productId Int
+  saleId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id])
+  sale      Sale     @relation(fields: [saleId], references: [id])
+
+  @@map("sale_details")
+}
+
+enum Profile {
+  ADMIN
+  EMPLOYEE
+}
+
+enum Status {
+  ACTIVE
+  LOCKED
+}
+
+enum DenominationType {
+  BILLETE
+  MONEDA
+  OTRO
+}
+
+enum MetodoPago {
+  EFECTIVO
+  YAPE
+  PLIN
+  TARJETA
+  TRANSFERENCIA
+}
+
+enum MesaEstado {
+  libre
+  ocupada
+}
+
+enum PedidoEstado {
+  PENDIENTE
+  LISTO
+  ENTREGADO
+  CANCELADO
+}
+
+enum SaleStatus {
+  PAID
+  PENDING
+  CANCELLED
+}
