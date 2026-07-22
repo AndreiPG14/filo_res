@@ -68,7 +68,7 @@ export default function MesasPage() {
             </div>
             <div className="space-y-1">
               <Label>Estado</Label>
-              <Select value={form.estado} onValueChange={(v) => setForm({ ...form, estado: v })}>
+              <Select value={form.estado} onValueChange={(v) => setForm({ ...form, estado: v as string })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="libre">Libre</SelectItem>

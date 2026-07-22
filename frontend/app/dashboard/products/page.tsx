@@ -87,7 +87,7 @@ export default function ProductsPage() {
             </div>
             <div className="space-y-1">
               <Label>Categoría</Label>
-              <Select value={form.categoryId} onValueChange={(v) => setForm({ ...form, categoryId: v })}>
+              <Select value={form.categoryId} onValueChange={(v) => setForm({ ...form, categoryId: v as string })}>
                 <SelectTrigger><SelectValue placeholder="Seleccionar" /></SelectTrigger>
                 <SelectContent>{categories.map((c) => <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>)}</SelectContent>
               </Select>

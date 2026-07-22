@@ -90,7 +90,7 @@ export default function UsersPage() {
             </div>
             <div className="space-y-1">
               <Label>Perfil</Label>
-              <Select value={form.profile} onValueChange={(v) => setForm({ ...form, profile: v })}>
+              <Select value={form.profile} onValueChange={(v) => setForm({ ...form, profile: v as string })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="ADMIN">Administrador</SelectItem>
@@ -100,7 +100,7 @@ export default function UsersPage() {
             </div>
             <div className="space-y-1">
               <Label>Estado</Label>
-              <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
+              <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v as string })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="ACTIVE">Activo</SelectItem>
