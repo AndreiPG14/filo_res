@@ -9,14 +9,12 @@ RUN npm install --ignore-engines
 
 COPY . .
 
-RUN DATABASE_URL="postgresql://placeholder:placeholder@placeholder:5432/placeholder" npx prisma generate --schema=prisma/schema.prisma && echo "PRISMA OK"
+RUN DATABASE_URL="postgresql://placeholder:placeholder@placeholder:5432/placeholder" npx prisma generate --schema=prisma/schema.prisma
 
-RUN npm run build; echo "BUILD EXIT CODE: $?"
+RUN npm run build
 
-RUN ls -la dist/ || echo "DIST MISSING"
-
-RUN test -f dist/main.js && echo "MAIN OK" || (echo "MAIN MISSING - contents:" && ls -la dist/ && exit 1)
+RUN ls -la dist/ && ls -la dist/src/ 2>/dev/null || ls -la dist/
 
 EXPOSE 3001
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main"]
