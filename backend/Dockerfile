@@ -8,6 +8,10 @@ COPY package*.json ./
 RUN npm install --ignore-engines
 
 COPY . .
+
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
 RUN npx prisma generate
 RUN npx tsc -p tsconfig.json && echo "Build OK" && ls dist/
 
