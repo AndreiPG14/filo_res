@@ -66,7 +66,7 @@ export default function DenominationsPage() {
           <div className="space-y-4 py-2">
             <div className="space-y-1">
               <Label>Tipo</Label>
-              <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v })}>
+              <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v as string })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="BILLETE">Billete</SelectItem>
