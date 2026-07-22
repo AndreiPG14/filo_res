@@ -9,7 +9,7 @@ RUN npm install --ignore-engines
 
 COPY . .
 RUN npx prisma generate
-RUN npm run build && ls dist/
+RUN npx tsc -p tsconfig.json && echo "Build OK" && ls dist/
 
 EXPOSE 3001
 
