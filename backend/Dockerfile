@@ -15,7 +15,7 @@ RUN npm run build; echo "BUILD EXIT CODE: $?"
 
 RUN ls -la dist/ || echo "DIST MISSING"
 
-RUN test -f dist/main.js && echo "MAIN OK" || (echo "MAIN MISSING" && exit 1)
+RUN test -f dist/main.js && echo "MAIN OK" || (echo "MAIN MISSING - contents:" && ls -la dist/ && exit 1)
 
 EXPOSE 3001
 
