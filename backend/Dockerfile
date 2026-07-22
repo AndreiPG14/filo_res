@@ -9,10 +9,7 @@ RUN npm install --ignore-engines
 
 COPY . .
 
-ARG DATABASE_URL
-ENV DATABASE_URL=${DATABASE_URL}
-
-RUN npx prisma generate
+RUN DATABASE_URL="postgresql://placeholder:placeholder@placeholder:5432/placeholder" npx prisma generate --schema=prisma/schema.prisma
 RUN npx tsc -p tsconfig.json && echo "Build OK" && ls dist/
 
 EXPOSE 3001
