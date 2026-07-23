@@ -12,9 +12,9 @@ import api from "@/lib/api";
 import { ImageUpload } from "@/components/image-upload";
 
 interface Category { id: number; name: string; }
-interface Product { id: number; name: string; price: number; stock: number; alerts: number; barcode?: string; image?: string; categoryId: number; category?: Category; }
+interface Product { id: number; name: string; price: number; stock: number; alerts: number; image?: string; categoryId: number; category?: Category; }
 
-const emptyForm = { name: "", barcode: "", price: "0", stock: "0", alerts: "0", image: "", categoryId: "" };
+const emptyForm = { name: "", price: "0", stock: "0", alerts: "0", image: "", categoryId: "" };
 
 export default function ProductsPage() {
   const [data, setData] = useState<Product[]>([]);
@@ -38,7 +38,7 @@ export default function ProductsPage() {
   const openAdd = () => { setEditing(null); setForm(emptyForm); setOpen(true); };
   const openEdit = (row: Product) => {
     setEditing(row);
-    setForm({ name: row.name, barcode: row.barcode || "", price: String(row.price), stock: String(row.stock), alerts: String(row.alerts), image: row.image || "", categoryId: String(row.categoryId) });
+    setForm({ name: row.name, price: String(row.price), stock: String(row.stock), alerts: String(row.alerts), image: row.image || "", categoryId: String(row.categoryId) });
     setOpen(true);
   };
 
@@ -80,10 +80,6 @@ export default function ProductsPage() {
             <div className="col-span-2 space-y-1">
               <Label>Nombre</Label>
               <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-            </div>
-            <div className="space-y-1">
-              <Label>Código de barras</Label>
-              <Input value={form.barcode} onChange={(e) => setForm({ ...form, barcode: e.target.value })} />
             </div>
             <div className="space-y-1">
               <Label>Categoría</Label>
